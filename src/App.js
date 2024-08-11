@@ -1,3 +1,8 @@
+const listItem = [
+	{ id: 1, title: "Makan", done: false },
+	{ id: 2, title: "Tidur", done: true },
+];
+
 function App() {
 	return (
 		<div className="app">
@@ -25,10 +30,27 @@ function CheckList() {
 	return (
 		<div className="list">
 			<ul>
-				<li>Makan</li>
-				<li>Tidur</li>
+				{listItem.map((item) => (
+					<Item
+						key={item.id}
+						item={item}
+					/>
+				))}
 			</ul>
 		</div>
+	);
+}
+
+function Item({ item }) {
+	return (
+		<li>
+			<input type="checkbox" />
+			<span
+				style={{ textDecoration: item.done ? "line-through" : "none" }}
+			>
+				{item.title}
+			</span>
+		</li>
 	);
 }
 
