@@ -7,11 +7,18 @@ function App() {
 		setListItems((listItems) => [...listItems, item]);
 	}
 
+	function handleDeleteItem(id) {
+		setListItems((listItems) => listItems.filter((item) => item.id !== id));
+	}
+
 	return (
 		<div className="app">
 			<Logo />
 			<Form onAddItem={handleAddItem} />
-			<CheckList items={listItems} />
+			<CheckList
+				items={listItems}
+				onDeleteItem={handleDeleteItem}
+			/>
 			<Stats />
 		</div>
 	);
@@ -58,7 +65,7 @@ function Form({ onAddItem }) {
 	);
 }
 
-function CheckList({ items }) {
+function CheckList({ items, onDeleteItem }) {
 	return (
 		<div className="list">
 			<ul>
@@ -66,6 +73,7 @@ function CheckList({ items }) {
 					<Item
 						key={item.id}
 						item={item}
+						onDeleteItem={onDeleteItem}
 					/>
 				))}
 			</ul>
@@ -73,7 +81,7 @@ function CheckList({ items }) {
 	);
 }
 
-function Item({ item }) {
+function Item({ item, onDeleteItem }) {
 	return (
 		<li>
 			<input type="checkbox" />
@@ -82,6 +90,7 @@ function Item({ item }) {
 			>
 				{item.title}
 			</span>
+			<button onClick={() => onDeleteItem(item.id)}>❌</button>
 		</li>
 	);
 }
