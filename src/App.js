@@ -11,6 +11,19 @@ function App() {
 		setListItems((listItems) => listItems.filter((item) => item.id !== id));
 	}
 
+	function handleToggleItem(id) {
+		setListItems((listItems) => {
+			return listItems.map((item) => {
+				if (item.id === id) {
+					return {
+						...item,
+						done: !item.done,
+					};
+				}
+			});
+		});
+	}
+
 	return (
 		<div className="app">
 			<Logo />
@@ -18,6 +31,7 @@ function App() {
 			<CheckList
 				items={listItems}
 				onDeleteItem={handleDeleteItem}
+				onToggleItem={handleToggleItem}
 			/>
 			<Stats />
 		</div>
@@ -65,7 +79,7 @@ function Form({ onAddItem }) {
 	);
 }
 
-function CheckList({ items, onDeleteItem }) {
+function CheckList({ items, onDeleteItem, onToggleItem }) {
 	return (
 		<div className="list">
 			<ul>
@@ -74,6 +88,7 @@ function CheckList({ items, onDeleteItem }) {
 						key={item.id}
 						item={item}
 						onDeleteItem={onDeleteItem}
+						onToggleItem={onToggleItem}
 					/>
 				))}
 			</ul>
@@ -81,10 +96,14 @@ function CheckList({ items, onDeleteItem }) {
 	);
 }
 
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem, onToggleItem }) {
 	return (
 		<li>
-			<input type="checkbox" />
+			<input
+				type="checkbox"
+				value={item.done}
+				onChange={() => onToggleItem(item.id)}
+			/>
 			<span
 				style={{ textDecoration: item.done ? "line-through" : "none" }}
 			>
